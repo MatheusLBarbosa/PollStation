@@ -1,6 +1,7 @@
 package com.mlb.pollstation.dto.response;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @Data
 @AllArgsConstructor

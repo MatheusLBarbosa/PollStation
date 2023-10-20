@@ -1,10 +1,10 @@
 package com.mlb.pollstation.entities;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -27,4 +27,5 @@ public class Issue {
 	private Integer totalVotes;
 	@OneToOne(mappedBy = "issueId")
 	private Session session;
+
 }

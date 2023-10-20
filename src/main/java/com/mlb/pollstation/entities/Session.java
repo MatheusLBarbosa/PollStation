@@ -1,11 +1,14 @@
 package com.mlb.pollstation.entities;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-
 import com.mlb.pollstation.enums.SessionStatus;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
 
 @Entity
 @Getter

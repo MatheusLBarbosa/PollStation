@@ -1,6 +1,5 @@
 package com.mlb.pollstation.services;
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.mlb.pollstation.dto.request.IssueRequestDTO;
 import com.mlb.pollstation.dto.response.IssueResponseDTO;
 import com.mlb.pollstation.entities.Issue;
@@ -9,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-
-import java.beans.Beans;
 
 @Slf4j
 @Service
