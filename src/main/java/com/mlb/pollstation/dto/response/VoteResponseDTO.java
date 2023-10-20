@@ -11,5 +11,7 @@ public class VoteResponseDTO {
     @NotNull
     private String cpf;
     @NotNull
+    private String issue;
+    @NotNull
     private VoteChoice voteChoice;
 }

@@ -31,6 +31,6 @@ public class Session {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "session_status", nullable = false)
 	private SessionStatus sessionStatus;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "session")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sessionId")
 	private Collection<Vote> votes;
 }

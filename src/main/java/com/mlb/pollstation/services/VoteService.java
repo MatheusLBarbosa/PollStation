@@ -2,6 +2,7 @@ package com.mlb.pollstation.services;
 
 import com.mlb.pollstation.dto.request.VoteRequestDTO;
 import com.mlb.pollstation.dto.response.VoteResponseDTO;
+import com.mlb.pollstation.entities.Session;
 import com.mlb.pollstation.entities.Vote;
 import com.mlb.pollstation.exception.GeneralException;
 import com.mlb.pollstation.repositories.VoteRepository;
@@ -20,22 +21,24 @@ public class VoteService {
     private final SessionService sessionService;
 
     public VoteResponseDTO voteInIssue(VoteRequestDTO request){
-        log.info("Received vote {}", request);
+        log.info("Received vote: {}", request);
 
-        Vote vote = new Vote();
-        BeanUtils.copyProperties(request, vote);
+        Session session = sessionService.isSessionOpen(request.getSessionId());
+        userHasVoted(request.getCpf(), session.getIssueId().getId());
 
-        sessionService.isSessionOpen(vote.getId());
-        userHasVoted(vote.getCpf(), vote.getId());
+        Vote entity = new Vote();
+        BeanUtils.copyProperties(request, entity);
+        entity.setSessionId(session);
 
         log.info("Saving vote...");
-        voteRepository.save(vote);
+        voteRepository.save(entity);
 
-        return new VoteResponseDTO(vote.getCpf(), vote.getVoteChoice());
+        return new VoteResponseDTO(entity.getCpf(), entity.getSessionId().getIssueId().getTitle() ,entity.getVoteChoice());
     }
 
-    private void userHasVoted(String cpf, Long sessionId) {
-        if (voteRepository.verifyIfUserVoted(cpf, sessionId))
+    private void userHasVoted(String cpf, Long issueId) {
+        log.info("Verify if user {} has voted in session {}", cpf, issueId);
+        if (voteRepository.verifyIfUserVoted(cpf, issueId))
             throw new GeneralException("User has voted", HttpStatus.BAD_REQUEST);
     }
 
