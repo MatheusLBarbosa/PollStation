@@ -40,16 +40,13 @@ public class SessionService {
         return new SessionResponseDTO("session created");
     }
 
-    public Session isSessionOpen(Long sessionId) {
+    public Session verifyIfSessionExist(Long sessionId) {
         log.info("Searching for session with id: {}", sessionId);
-        Session session = sessionRepository.findById(sessionId)
+        return sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new GeneralException("This session may not exist", HttpStatus.BAD_REQUEST));
-        validateSession(session);
-
-        return session;
     }
 
-    private void validateSession(Session session) {
+    public void validateSession(Session session) {
         log.info("Validate session: {}", session);
         if (session.getSessionStatus() == SessionStatus.CLOSED_SESSION)
             throw new GeneralException("This session is closed", HttpStatus.NOT_ACCEPTABLE);

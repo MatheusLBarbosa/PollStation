@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@Table(name = "tb_issue")
+@Table(name = "issue")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Issue {
 	@Id
