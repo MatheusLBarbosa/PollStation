@@ -51,6 +51,8 @@ public class SessionService {
         if (session.getSessionStatus() == SessionStatus.CLOSED_SESSION)
             throw new GeneralException("This session is closed", HttpStatus.NOT_ACCEPTABLE);
         if (session.getFinishedAt().isBefore(LocalDateTime.now()))
+            session.setSessionStatus(SessionStatus.CLOSED_SESSION);
+            sessionRepository.save(session);
             throw new GeneralException("Expired session", HttpStatus.NOT_ACCEPTABLE);
     }
 
