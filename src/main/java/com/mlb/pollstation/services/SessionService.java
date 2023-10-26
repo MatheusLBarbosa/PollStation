@@ -28,6 +28,8 @@ public class SessionService {
 
         Issue issue = issueService.findById(issueId);
 
+        verifyIfSessionExistByIssue(issueId);
+
         Session session = new Session();
         session.setIssueId(issue);
         session.setSessionStatus(SessionStatus.OPEN_SESSION);
@@ -37,7 +39,7 @@ public class SessionService {
         issueRepository.save(issue);
 
         log.info("Session {} created with success", session.getId());
-        return new SessionResponseDTO("session created");
+        return new SessionResponseDTO("session created", session.getId());
     }
 
     public Session verifyIfSessionExist(Long sessionId) {
@@ -46,13 +48,17 @@ public class SessionService {
                 .orElseThrow(() -> new GeneralException("This session may not exist", HttpStatus.BAD_REQUEST));
     }
 
+    private void verifyIfSessionExistByIssue(Long issueId) {
+        log.info("Searching for session with id: {}", issueId);
+        if(sessionRepository.findSessionByIssueId(issueId))
+            throw new GeneralException("Session was previously added", HttpStatus.BAD_REQUEST);
+    }
+
     public void validateSession(Session session) {
         log.info("Validate session: {}", session);
         if (session.getSessionStatus() == SessionStatus.CLOSED_SESSION)
             throw new GeneralException("This session is closed", HttpStatus.NOT_ACCEPTABLE);
         if (session.getFinishedAt().isBefore(LocalDateTime.now()))
-            session.setSessionStatus(SessionStatus.CLOSED_SESSION);
-            sessionRepository.save(session);
             throw new GeneralException("Expired session", HttpStatus.NOT_ACCEPTABLE);
     }
 

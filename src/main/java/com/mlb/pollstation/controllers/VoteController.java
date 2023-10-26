@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.*;
 public class VoteController {
 
     private final VoteService service;
+
     @PostMapping
-    public ResponseEntity<VoteResponseDTO> startSession(@RequestBody @Validated VoteRequestDTO request) {
+    public ResponseEntity<VoteResponseDTO> voteRegister(@RequestBody @Validated VoteRequestDTO request) {
         return new ResponseEntity<>(service.voteInIssue(request), HttpStatus.CREATED);
     }
 
@@ -26,5 +27,5 @@ public class VoteController {
     public ResponseEntity<Object> sessionDetails(@PathVariable(value = "sessionId", required = true) Long sessionId) {
         return new ResponseEntity<>(service.countingOfVotes(sessionId), HttpStatus.OK);
     }
-	
+
 }

@@ -2,10 +2,7 @@ package com.mlb.pollstation.entities;
 
 import com.mlb.pollstation.enums.SessionStatus;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -13,6 +10,7 @@ import java.util.Collection;
 @Entity
 @Getter
 @Setter
+@ToString
 @RequiredArgsConstructor
 @Table(name = "session")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
