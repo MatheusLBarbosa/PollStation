@@ -1,6 +1,7 @@
 package com.mlb.pollstation.services;
 
 import com.mlb.pollstation.dto.request.VoteRequestDTO;
+import com.mlb.pollstation.dto.response.TotalVotesResponseDTO;
 import com.mlb.pollstation.dto.response.VoteResponseDTO;
 import com.mlb.pollstation.entities.Session;
 import com.mlb.pollstation.entities.Vote;
@@ -23,7 +24,8 @@ public class VoteService {
     public VoteResponseDTO voteInIssue(VoteRequestDTO request){
         log.info("Received vote: {}", request);
 
-        Session session = sessionService.isSessionOpen(request.getSessionId());
+        Session session = sessionService.verifyIfSessionExist(request.getSessionId());
+        sessionService.validateSession(session);
         userHasVoted(request.getCpf(), session.getIssueId().getId());
 
         Vote entity = new Vote();
@@ -34,6 +36,13 @@ public class VoteService {
         voteRepository.save(entity);
 
         return new VoteResponseDTO(entity.getCpf(), entity.getSessionId().getIssueId().getTitle() ,entity.getVoteChoice());
+    }
+
+    public TotalVotesResponseDTO countingOfVotes(Long sessionId){
+        log.info("Starting counting of votes for session {}", sessionId);
+        Session session = sessionService.verifyIfSessionExist(sessionId);
+        log.info("Session found: {}", session);
+        return voteRepository.getSessionVoteDetails(sessionId);
     }
 
     private void userHasVoted(String cpf, Long issueId) {
